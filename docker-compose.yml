@@ -1,0 +1,31 @@
+version: '3.4'
+
+networks:
+  mydockerapi-dev:
+    driver: bridge
+
+services:
+  webapi:
+    container_name: ef7_api
+    build:
+      context: .
+      dockerfile: EF7.API/Dockerfile
+    depends_on:
+       - database
+    networks:
+      - mydockerapi-dev
+    ports:
+      - "8080:80" 
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: ef7_db
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "yourPassword@123"
+    networks:
+      - mydockerapi-dev
+
+ 
